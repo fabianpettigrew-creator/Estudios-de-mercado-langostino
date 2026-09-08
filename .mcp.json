@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "faostat": {
+      "command": "C:\\Users\\fmpet\\AppData\\Local\\Python\\pythoncore-3.14-64\\Scripts\\faostat-mcp.exe",
+      "args": [],
+      "env": {
+        "FAOSTAT_DISK_CACHE": "1"
+      }
+    }
+  }
+}

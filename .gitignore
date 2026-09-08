@@ -1,0 +1,87 @@
+# ============================================================
+#  .gitignore — Estudios de mercado langostino
+#
+#  Todo lo que figure en esta lista NO se sube a GitHub.
+#  Los archivos siguen en tu disco y en OneDrive como siempre:
+#  Git simplemente los ignora.
+#
+#  Regla general del proyecto: se versiona el CODIGO y los
+#  INFORMES en texto. Los datos crudos y los archivos que los
+#  scripts generan solos se quedan afuera.
+# ============================================================
+
+
+# --- Datos y documentos pesados -----------------------------
+# Planillas, bases y documentos: Git no puede compararlos y
+# guarda una copia entera cada vez que cambian.
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+*.db
+*.sqlite
+*.sqlite3
+*.parquet
+*.pkl
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.zip
+*.gz
+*.7z
+*.rar
+
+
+# --- Graficos e imagenes generados por los scripts ----------
+# No hace falta versionarlos: se regeneran corriendo el script.
+*.png
+*.jpg
+*.jpeg
+*.svg
+
+
+# --- Carpetas de datos crudos y temporales ------------------
+raw/
+logs/
+tmp/
+temp/
+.cache/
+
+
+# --- Python: archivos que Python crea solo ------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+
+# --- Node ---------------------------------------------------
+node_modules/
+
+
+# --- Copias de seguridad automaticas ------------------------
+*.bak
+*.bak-*
+*.bak2-*
+*.corrupto-*
+*~
+
+
+# --- Configuracion local y credenciales ---------------------
+# Nunca subir claves ni tokens a GitHub.
+.env
+.env.*
+*.key
+*.pem
+credenciales*
+.claude/settings.local.json
+
+
+# --- Ruido del sistema operativo y de OneDrive --------------
+Thumbs.db
+desktop.ini
+.DS_Store
