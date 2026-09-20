@@ -35,7 +35,10 @@ from openpyxl.utils import get_column_letter as L
 sys.stdout.reconfigure(encoding="utf-8")
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RAIZ)
-EXPO_EC = os.environ.get("EXPO_ECUADOR_DIR", os.path.join(RAIZ, "..", "EXPO ECUADOR"))
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+EXPO_EC = os.environ.get("EXPO_ECUADOR_DIR", fuente("expo_ecuador"))
 SALIDA = os.path.join(RAIZ, "salidas",
                       "L1_Espana_Argentina_vs_Ecuador_2020_2026.xlsx")
 DESDE, HASTA = "2020-01", "2026-07"

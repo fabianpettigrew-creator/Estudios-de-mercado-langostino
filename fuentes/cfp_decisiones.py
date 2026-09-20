@@ -53,7 +53,10 @@ warnings.simplefilter("ignore")
 sys.stdout.reconfigure(encoding="utf-8")
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DIR = r"C:\Users\fmpet\OneDrive\IA agentes\ACTAS CFP"
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR = fuente("actas_cfp")
 
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
          "agosto", "septiembre", "octubre", "noviembre", "diciembre"]

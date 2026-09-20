@@ -2,7 +2,10 @@
 """Parser de desembarques oficiales (SSPyA): puerto × flota × especie × mes, 2013-2026."""
 import pandas as pd, warnings, sys, re, glob, os, json; warnings.simplefilter('ignore')
 sys.stdout.reconfigure(encoding='utf-8')
-DIR=r"C:\Users\fmpet\OneDrive\IA agentes\Desembarques historicos argentina"
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR=fuente("desembarques_ar")
 MES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
 def cargar_anio(path):

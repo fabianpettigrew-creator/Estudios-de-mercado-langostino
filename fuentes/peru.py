@@ -4,7 +4,10 @@ Deduplica dentro de cada archivo Y descarta archivos de años repetidos
 (hay dos descargas idénticas de 2023)."""
 import pandas as pd, warnings, sys, re, glob, os; warnings.simplefilter('ignore')
 sys.stdout.reconfigure(encoding='utf-8')
-DIR=r"C:\Users\fmpet\OneDrive\IA agentes\Softrade lango 2025 2026\EXPO PERU LANGOSTINO"
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR=fuente("softrade_langostino", "EXPO PERU LANGOSTINO")
 CLAVE=['DUA','Fecha','NANDINA','Exportador','País de Destino','Kgs. Netos','U$S FOB']
 
 def anio_de(f):

@@ -32,8 +32,10 @@ import pandas as pd
 
 sys.stdout.reconfigure(encoding="utf-8")
 RAIZ = os.path.dirname(os.path.abspath(__file__))
-EUMOFA = (r"C:\Users\fmpet\OneDrive\IA agentes\DATOS PESCA UE PROYECTO CLAUDE"
-          r"\Bases para analizar")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from biblioteca import fuente
+EUMOFA = fuente("eumofa_ue")
 SALIDA = os.path.join(RAIZ, "salidas",
                       "EUMOFA_precios_CIF_langostino_vannamei.xlsx")
 

@@ -117,3 +117,29 @@ es lo que lo hace valer más que un reporte automático.
 - Exportaciones de Ecuador (CNA publica mensual y rápido, pero en PDF/Excel, no API)
 - Serie FOB de INDEC para cerrar el circuito origen-destino
 - Precios de góndola, para el spread FOB–retail
+
+
+## Donde estan las bases (actualizado 19/09/2026)
+
+Las bases originales ya no estan en `IA agentes`: se mudaron a la biblioteca
+comun `OneDrive\BASES DE DATOS` (ver su LEEME.md). Ningun programa tiene la ruta
+escrita a mano: todos la piden con `from biblioteca import fuente`, que lee el
+mapa `BASES DE DATOS\rutas_bases.py`.
+
+| Antes (IA agentes)                         | Ahora (BASES DE DATOS)                                        | Clave            |
+|--------------------------------------------|---------------------------------------------------------------|------------------|
+| Softrade lango 2025 2026                   | 02 Comercio exterior\Softrade\Langostino 2025-2026            | softrade_langostino, aduana_ar, aduana_control |
+| Desembarques historicos argentina          | 01 Pesca...\Desembarques SSPyA historicos                     | desembarques_ar  |
+| INIDEP LANGOSTINO                          | 01 Pesca...\INIDEP langostino                                 | inidep_langostino|
+| ACTAS CFP                                  | 01 Pesca...\Actas CFP                                         | actas_cfp        |
+| CSV/XLSX de FAO FishStat y ASFIS           | 01 Pesca...\FAO FishStat                                      | fao_fishstat     |
+| EXPO ECUADOR                               | 02 Comercio exterior\Ecuador exportaciones camaron            | expo_ecuador     |
+| DATOS PESCA EEUU PROYECTO CLAUDE           | 02 Comercio exterior\EEUU importaciones NOAA                  | eeuu_noaa        |
+| TradeMap, Exportadores/Importadores 030617 | 02 Comercio exterior\TradeMap                                 | trademap         |
+| DATOS PESCA UE...\Bases para analizar      | 03 Mercado europeo - EUMOFA\EUMOFA (unificada)                | eumofa_ue        |
+| Bases para analizar                        | 03 Mercado europeo - EUMOFA\EUMOFA (unificada)                | eumofa_a         |
+| Scraping\datos_precios                     | 04 Precios minoristas - Scraping\datos_precios                | scraping_precios |
+
+Quedan en `IA agentes`: HORECA_indice_mensual.xlsx (lo lee demanda_inversa_horeca.py
+una carpeta mas arriba), serie_ipi_pesquero.xlsx, produccion_vannamei_langostino_2015-2024.xlsx
+y los documentos del estudio.

@@ -19,8 +19,10 @@ import os
 import pandas as pd
 
 # Carpeta de EUMOFA (fuera del proyecto).
-BASE = (r"C:\Users\fmpet\OneDrive\IA agentes\DATOS PESCA UE PROYECTO CLAUDE"
-        r"\Bases para analizar")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from biblioteca import fuente
+BASE = fuente("eumofa_ue")
 DESTINO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "datos")
 
 COLS = ["year", "month", "country", "flow_type", "intra_extra_EU", "partner_contry",

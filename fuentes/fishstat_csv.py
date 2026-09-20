@@ -19,7 +19,10 @@ import pandas as pd
 
 warnings.simplefilter("ignore")
 
-DIR = r"C:\Users\fmpet\OneDrive\IA agentes"
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR = fuente("fao_fishstat")
 ARCHIVOS = {
     "capturas": "CAPTURAS MUNDIAL FISHSTAT FAO-1.csv",
     "produccion": "PRODUCCIÓN MUNDIAL FISHSTAT FAO.csv",

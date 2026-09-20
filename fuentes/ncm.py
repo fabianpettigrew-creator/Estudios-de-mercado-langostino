@@ -28,8 +28,10 @@ import pandas as pd
 
 warnings.simplefilter("ignore")
 
-ARCHIVO = (r"C:\Users\fmpet\OneDrive\IA agentes\Softrade lango 2025 2026"
-           r"\EXPO ARGENTINA LANGO\NCM Completo ver 07.2026.xlsx")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+ARCHIVO = fuente("softrade_langostino", "EXPO ARGENTINA LANGO", "NCM Completo ver 07.2026.xlsx")
 
 # Rango de piezas por kilo de cada grado comercial, leído de los sufijos oficiales.
 # El grado que escribe el exportador (L1, C1…) se corresponde con estos tramos.

@@ -76,8 +76,10 @@ PISO_TAN = 500.0        # t; los ceros del paro 2025 son reales pero log(0) no
 
 
 # ---------------------------------------------------------------- datos
-DIR_INDEC_M = (r"C:\Users\fmpet\OneDrive\IA agentes\Softrade lango 2025 2026"
-               r"\EXPO ARGENTINA LANGO\EXPO ADUANA CONTROL")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from biblioteca import fuente
+DIR_INDEC_M = fuente("aduana_control")
 
 
 def _serie_espana() -> pd.DataFrame:

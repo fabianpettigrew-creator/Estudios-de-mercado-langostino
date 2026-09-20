@@ -23,10 +23,12 @@ import pandas as pd
 
 # La carpeta 2017-2026 supersede a la vieja "BASES ADUANA 2020 A 2026":
 # cubre 2017-02 en adelante (falta solo 2017-01) con los mismos formatos.
-DIR = (r"C:\Users\fmpet\OneDrive\IA agentes\Softrade lango 2025 2026"
-       r"\EXPO ARGENTINA LANGO\BASES ADUANA 2017 A 2026")
-CACHE = (r"C:\Users\fmpet\OneDrive\IA agentes\Estudios de mercado langostino"
-         r"\datos\aduana_langostino.pkl")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR = fuente("aduana_ar")
+CACHE = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))),
+                      "datos", "aduana_langostino.pkl")
 COLS = ["tipo", "periodo", "aduana", "ncm", "pais_cod", "medio", "unidad",
         "kg", "fob", "declaraciones", "unidad_est", "precio_max", "precio_min",
         "precio_prom"]

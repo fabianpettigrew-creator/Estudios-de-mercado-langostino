@@ -21,8 +21,10 @@ import pandas as pd
 
 warnings.simplefilter("ignore")
 
-DIR = (r"C:\Users\fmpet\OneDrive\IA agentes\Softrade lango 2025 2026"
-       r"\EXPO ARGENTINA LANGO\EXPO ADUANA CONTROL")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR = fuente("aduana_control")
 NCM = {"3061710": "entero", "3061790": "cola"}      # sin cero inicial: el CSV los trae
 # como "03061710" y cargar() se lo saca con lstrip("0"). No cambiar las claves sin mirar
 # esa línea: el CSV tiene el cero, el diccionario no.

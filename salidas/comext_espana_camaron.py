@@ -37,8 +37,10 @@ from openpyxl.utils import get_column_letter as L
 
 sys.stdout.reconfigure(encoding="utf-8")
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE = (r"C:\Users\fmpet\OneDrive\IA agentes\DATOS PESCA UE PROYECTO CLAUDE"
-        r"\Bases para analizar")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+BASE = fuente("eumofa_ue")
 ANUAL = os.path.join(BASE, "2019_2025_Yearly_comext_cn8detail.xlsx")
 PARCIAL = os.path.join(BASE, "2026_Trade_data_reported_by_EU_countries_CN8_details.csv")
 MASIVA = os.path.join(BASE, "EUMOFA BASES", "DESCARGA MASIVA", "EXPO IMPO", "EU",

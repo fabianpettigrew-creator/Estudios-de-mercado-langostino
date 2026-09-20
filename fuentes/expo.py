@@ -27,8 +27,10 @@ import pandas as pd
 warnings.simplefilter("ignore")  # silencia el aviso de estilo de openpyxl
 
 # Carpeta con los .xlsx de exportación (fuera del proyecto, junto a los de Softrade).
-EXPO_DIR = (r"C:\Users\fmpet\OneDrive\IA agentes\Softrade lango 2025 2026"
-            r"\EXPO ARGENTINA LANGO")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+EXPO_DIR = fuente("softrade_langostino", "EXPO ARGENTINA LANGO")
 
 FLAG_COL = "Revisión Claude (motivo de la marca)"
 CLAVE = ["Fecha", "NCM-SIM", "País de Destino", "U$S Unitario",

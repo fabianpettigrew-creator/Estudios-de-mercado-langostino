@@ -34,7 +34,10 @@ import urllib.request
 sys.stdout.reconfigure(encoding="utf-8")
 
 API = "https://marabiertonew.inidep.edu.ar/server/api"
-DIR = r"C:\Users\fmpet\OneDrive\IA agentes\INIDEP LANGOSTINO"
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR = fuente("inidep_langostino")
 UA = "Mozilla/5.0 (compatible; AXIA/1.0; investigacion economica pesquera)"
 PAUSA = 1.0
 _CTX = ssl.create_default_context()

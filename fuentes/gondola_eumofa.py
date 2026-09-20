@@ -17,10 +17,12 @@ import pandas as pd
 
 warnings.simplefilter("ignore")
 
-DIR = (r"C:\Users\fmpet\OneDrive\IA agentes\Bases para analizar"
-       r"\EUMOFA BASES\DESCARGA MASIVA")
-CACHE = (r"C:\Users\fmpet\OneDrive\IA agentes\Estudios de mercado langostino"
-         r"\datos\gondola_eumofa.pkl")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR = fuente("eumofa_a", "EUMOFA BASES", "DESCARGA MASIVA")
+CACHE = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))),
+                      "datos", "gondola_eumofa.pkl")
 PATRON = "Daily-online retail prices"
 
 

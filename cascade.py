@@ -49,7 +49,10 @@ from fuentes import expo  # noqa: E402
 
 BASE = Path(__file__).parent
 DB = BASE / "datos" / "mercado.db"
-RETAIL = (BASE.parent / "Scraping" / "datos_precios" / "precios_retail.csv")
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from biblioteca import fuente
+RETAIL = (Path(fuente("scraping_precios")) / "precios_retail.csv")
 SALIDAS = BASE / "salidas"
 
 # Tipo de cambio unico para la foto (no por fecha). Actualizar si se reusa.
@@ -160,7 +163,7 @@ def _ls_entero_eur():
     el JSON crudo, que es la unica via consistente. Corroborado por el cascade:
     CIF ES €6.57 x margen retail ~1.8 = €11.8, no €21.
     """
-    patron = str(BASE.parent / "Scraping" / "datos_precios" / "raw" / "**"
+    patron = str(Path(fuente("scraping_precios")) / "raw" / "**"
                  / "lasirena" / "busqueda_*.json")
     precios = []
     for f in glob.glob(patron, recursive=True):
@@ -201,7 +204,7 @@ def gondola():
               & nom.str.contains("peeled")]
     es_entero = _ls_entero_eur()       # ES: desde peso neto real, no del panel
     es_n = 0
-    patron = str(BASE.parent / "Scraping" / "datos_precios" / "raw" / "**"
+    patron = str(Path(fuente("scraping_precios")) / "raw" / "**"
                  / "lasirena" / "busqueda_gambon*.json")
     for f in glob.glob(patron, recursive=True):
         try:

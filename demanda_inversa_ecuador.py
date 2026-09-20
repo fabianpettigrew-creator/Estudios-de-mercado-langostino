@@ -53,7 +53,10 @@ sys.path.insert(0, RAIZ)
 
 import demanda_inversa_tangonera as T   # noqa: E402
 
-EXPO_EC = os.environ.get("EXPO_ECUADOR_DIR", os.path.join(RAIZ, "..", "EXPO ECUADOR"))
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from biblioteca import fuente
+EXPO_EC = os.environ.get("EXPO_ECUADOR_DIR", fuente("expo_ecuador"))
 MENSUALES = ("EXPO 2013 - 2021 MENSUAL.xlsx", "EXPO 2022 - 2026 MENSUAL.xlsx")
 # Los archivos mensuales traen sólo la partida 0306.17. Los anuales traían además 0306.16
 # —«decápodos de agua fría», que en Ecuador es una clasificación de arrastre de los primeros

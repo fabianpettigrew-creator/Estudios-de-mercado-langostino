@@ -36,7 +36,10 @@ import urllib.request
 sys.stdout.reconfigure(encoding="utf-8")
 
 BASE = "https://cfp.gob.ar"
-DIR = r"C:\Users\fmpet\OneDrive\IA agentes\ACTAS CFP"
+import sys as _sys, os as _os  # biblioteca BASES DE DATOS (mapa rutas_bases.py)
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from biblioteca import fuente
+DIR = fuente("actas_cfp")
 UA = "Mozilla/5.0 (compatible; AXIA/1.0; investigacion economica pesquera)"
 PAUSA = 1.0          # segundos entre pedidos, para no golpear el sitio
 _CTX = ssl.create_default_context()

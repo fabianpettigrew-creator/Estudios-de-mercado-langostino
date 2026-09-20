@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 """Verifica que el PPT entregable siga siendo lo que produce `deck_ceo.js`.
 
+Desde el rediseño, `deck_ceo.js` lo EMITE `extraer_deck.py` leyendo el propio PPT,
+así que esta verificación deja de ser «el código produce el entregable» y pasa a
+ser «la extracción sigue estando al día». El deck nuevo no tiene gráficos de
+Office —las series están dibujadas como formas—, de modo que la comparación de
+datos de gráfico queda vacía y lo que manda es el texto.
+
 Genera el deck a un archivo temporal y lo compara contra el que está en `salidas/`,
 placa por placa: texto, datos de los gráficos y notas del orador.
 
@@ -34,7 +40,9 @@ import zipfile
 
 sys.stdout.reconfigure(encoding="utf-8")
 RAIZ = os.path.dirname(os.path.abspath(__file__))
-ENTREGABLE = os.path.join(RAIZ, "salidas", "Langostino_tangonero_CEO.pptx")
+ENTREGABLE = os.path.join(
+    RAIZ, "salidas",
+    "Estudio econométrico - testeo reducción  de captura.pptx")
 GENERADOR = os.path.join(RAIZ, "deck_ceo.js")
 
 RE_SLIDE = re.compile(r"ppt/slides/slide(\d+)\.xml$")
@@ -58,16 +66,33 @@ def _num(v: str):
         return v
 
 
+def _orden(z: zipfile.ZipFile) -> list[str]:
+    """Las placas en el ORDEN DE LA PRESENTACIÓN, no por número de archivo.
+
+    No es lo mismo desde que el deck se actualiza por parche: una placa insertada en el
+    medio se guarda como `slide28.xml` pero se muestra en la posición 26, así que
+    ordenar por nombre de archivo compara placas distintas entre sí e inventa brechas.
+    El orden real lo da el `sldIdLst` de presentation.xml.
+    """
+    pres = z.read("ppt/presentation.xml").decode("utf-8")
+    rels = z.read("ppt/_rels/presentation.xml.rels").decode("utf-8")
+    mapa = dict(re.findall(r'Id="(rId\d+)"[^>]*Target="(slides/slide\d+\.xml)"', rels))
+    return ["ppt/" + mapa[r]
+            for r in re.findall(r'<p:sldId id="\d+" r:id="(rId\d+)"/>', pres)]
+
+
 def leer(ruta: str) -> dict:
     z = zipfile.ZipFile(ruta)
-    slides = sorted((n for n in z.namelist() if RE_SLIDE.match(n)),
-                    key=lambda s: int(RE_SLIDE.match(s).group(1)))
+    slides = _orden(z)
     texto, notas = {}, {}
     for i, n in enumerate(slides, 1):
         texto[i] = _norm(" ".join(RE_RUN.findall(z.read(n).decode("utf-8"))))
         rels = z.read(n.replace("slides/", "slides/_rels/") + ".rels").decode("utf-8")
         m = re.search(r'Target="\.\./(notesSlides/notesSlide\d+\.xml)"', rels)
         crudo = RE_RUN.findall(z.read("ppt/" + m.group(1)).decode("utf-8")) if m else []
+        # El número de placa que PowerPoint guarda en la placa de notas NO es contenido:
+        # es un campo que se renumera solo y difiere entre el entregable y lo generado.
+        crudo = [x for x in crudo if not x.strip().isdigit()]
         notas[i] = _norm(" ".join(x for x in crudo if x.strip()))
     graficos = {}
     for n in sorted(x for x in z.namelist() if RE_CHART.match(x)):
@@ -81,9 +106,14 @@ def leer(ruta: str) -> dict:
                        if cat else [],
                        [_num(x) for x in RE_PT.findall(val.group(0)) if x.strip()]
                        if val else [])
-    return {"texto": texto, "notas": notas, "graficos": graficos,
-            "medios": [n for n in z.namelist()
-                       if n.startswith("ppt/media/") and not n.endswith("/")]}
+    # Los medios se comparan por CONTENIDO y no por nombre: pptxgenjs los rebautiza
+    # («image-1-1.jpeg» donde PowerPoint puso «image1.jpeg») y eso no es una
+    # diferencia — la foto es la misma. El hash lo dice sin ambigüedad.
+    import hashlib
+    medios = sorted(hashlib.sha1(z.read(n)).hexdigest()[:12]
+                    for n in z.namelist()
+                    if n.startswith("ppt/media/") and not n.endswith("/"))
+    return {"texto": texto, "notas": notas, "graficos": graficos, "medios": medios}
 
 
 def main() -> int:
@@ -135,8 +165,11 @@ def main() -> int:
     print()
     if fallas:
         print(f"HAY BRECHA — {len(fallas)}: " + "; ".join(fallas))
-        print("Corré `python premium_destino_placa15.py` si cambió el dato de la placa "
-              "15, y regenerá con `node deck_ceo.js salidas/Langostino_tangonero_CEO.pptx`.")
+        print("Si cambió un TEXTO, se edita el PPT y se vuelve a correr "
+              "`python extraer_deck.py`,")
+        print("que es lo que emite deck_ceo.js. Si cambió el DISEÑO, el camino es el "
+              "mismo: el PPT")
+        print("es la fuente y el generador lo reproduce.")
         return 1
     print("SIN BRECHA: el entregable es lo que produce el generador.")
     return 0
