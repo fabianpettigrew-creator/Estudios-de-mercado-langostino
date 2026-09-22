@@ -279,7 +279,10 @@ def politica(fs):
     # el recorte entra como log(1 + dq) y las variaciones salen exactas, no de primer
     # orden como en demanda_inversa_modelo.py y demanda_inversa_tangonera.py.
     dq = np.log(1 + rec["dq"])
-    expo = recorte_conxemar.EXPO_2025
+    # Las f de este cuadro son todas de alcance argentino (desembarque por flota contra
+    # FOB), así que el ámbito es «total» y (1+f) es la elasticidad correcta. El valor
+    # exportado sale del registro oficial, no de una constante escrita a mano.
+    expo = recorte_conxemar.base_exportadora()["v_total"]
     col_usd = f"US$ M sobre {expo:,.0f}"
     filas = []
     for nom, f in fs:

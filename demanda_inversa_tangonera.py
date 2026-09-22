@@ -335,14 +335,22 @@ def main() -> None:
         {"supuesto": "campaña con tendencia (C3)", "f": R.loc["C3  C2 + tendencia", "f"]},
         {"supuesto": "campaña sin tendencia (C2)", "f": R.loc[
             "C2  campaña · log (P/cultivo) ~ log captura + HORECA", "f"]},
-        {"supuesto": "sistema IAIDS (modelo general)", "f": -0.267},
+        {"supuesto": "sistema IAIDS (modelo general)", "f": -0.241},
         {"supuesto": "umbral para no perder facturación", "f": -1.0},
     ]).set_index("supuesto")
-    EXPO_2025 = recorte_conxemar.EXPO_2025
-    sim["Δ oferta %"] = dq * 100
-    sim["Δ precio %"] = sim.f * dq * 100
-    sim["Δ facturación %"] = (1 + sim.f) * dq * 100
-    sim["Δ facturación US$ M"] = EXPO_2025 * (1 + sim.f) * dq
+    # Todas las f de este cuadro salen del FOB argentino a todos los destinos, así que
+    # el ámbito es «total» y el umbral sigue siendo −1. La única prestada del sistema
+    # europeo es la del IAIDS, que va con su propio ámbito: ver recorte_conxemar.
+    base = recorte_conxemar.base_exportadora()
+    amb = {"sistema IAIDS (modelo general)": "ue"}
+    ap = [recorte_conxemar.simular(f, rec, base, amb.get(n, "total"))
+          for n, f in sim.f.items()]
+    sim["ámbito"] = [x["ambito"] for x in ap]
+    sim["Δ oferta %"] = [x["Δ oferta %"] for x in ap]
+    sim["Δ precio %"] = [x["Δ precio %"] for x in ap]
+    sim["Δ facturación %"] = [x["Δ ingreso %"] for x in ap]
+    sim["Δ facturación US$ M"] = [x["Δ ingreso US$ M"] for x in ap]
+    EXPO_2025 = base["v_total"]
     # El test que decide no es la facturación sino el margen: recortar conviene si el
     # costo EVITABLE por kilo supera 1+f del precio.
     sim["costo evitable mínimo c/P"] = 1 + sim.f

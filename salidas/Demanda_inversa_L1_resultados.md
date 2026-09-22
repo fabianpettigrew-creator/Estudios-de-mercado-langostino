@@ -154,6 +154,24 @@ volúmenes recuperándose. El promedio anual ponderado sube en parte porque el v
 
 ## 5. Simulación: el paquete de Conxemar
 
+> **Pendiente de regenerar (22-09-2026).** Este cuadro mezclaba tres cantidades que no
+> son la misma: la `f` sale del sistema europeo y describe el precio del **embarque a la
+> UE**; el −7,4% se mide sobre el **desembarque de todas las flotas**; y los US$867 M son
+> la **exportación total**, todos los productos y destinos. `d(P·Q)/dQ = P(1+f)` exige que
+> las tres sean la misma. La corrección está aplicada en `recorte_conxemar.simular()` y
+> hay que volver a correr `demanda_inversa_modelo.py`.
+>
+> **Y aparece algo que no estaba en la nota de verificación: el umbral deja de ser −1.**
+> Si el precio sube sólo en la UE, el embarque a Estados Unidos y a Asia pierde volumen
+> sin compensación alguna. El punto de equilibrio pasa a ser `f* = −1/(s·ρ)`, con `s` la
+> fracción europea del valor exportado. Con `s` en torno a la mitad, el umbral se va cerca
+> de **−2**. O sea que para el sistema por origen, «alcanza con |f| > 1» era una vara
+> **demasiado baja**, no demasiado alta: la conclusión del estudio sale reforzada otra vez.
+>
+> Corregir también empeora el escenario central, porque `f` es negativa y `s` menor que
+> uno: el recorte pierde más plata, no menos.
+
+
 Traducido a toneladas sobre el desembarque medio 2022-2024 (210.826 t):
 
 | Medida | Toneladas |

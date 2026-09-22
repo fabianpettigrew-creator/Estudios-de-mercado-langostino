@@ -54,13 +54,9 @@ sys.path.insert(0, RAIZ)
 
 import demanda_inversa_tangonera as T   # noqa: E402
 
-# Los 27 de la UE con las grafías de la base de comercio.
-UE = ["ESPAÑA", "ESPANA", "ITALIA", "FRANCIA", "PAISES BAJOS", "PAÍSES BAJOS",
-      "HOLANDA", "BELGICA", "BÉLGICA", "ALEMANIA", "PORTUGAL", "GRECIA", "DINAMARCA",
-      "LITUANIA", "POLONIA", "SUECIA", "IRLANDA", "RUMANIA", "RUMANÍA", "LETONIA",
-      "ESTONIA", "FINLANDIA", "AUSTRIA", "REPUBLICA CHECA", "REPÚBLICA CHECA",
-      "BULGARIA", "CROACIA", "ESLOVENIA", "HUNGRIA", "HUNGRÍA", "MALTA", "CHIPRE",
-      "ESLOVAQUIA", "LUXEMBURGO"]
+# Los 27 de la UE con las grafías de la base de comercio. Definición única en
+# recorte_conxemar, que la usa para separar el ámbito europeo del resto.
+from recorte_conxemar import UE   # noqa: E402
 
 # Las estimaciones del trabajo que hay que corregir por (1).
 ESTUDIO = {"IV mensual sobre el precio relativo (T5)": -0.184,

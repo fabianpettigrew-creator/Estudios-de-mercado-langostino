@@ -204,6 +204,14 @@ septiembre, −15.520 t):
 Sobre US$867 M de exportación de langostino de 2025, la estimación preferida son
 **−US$52 millones** de facturación por año.
 
+> **Pendiente de regenerar (22-09-2026).** Las `f` de este cuadro salen del FOB argentino
+> a todos los destinos, así que su ámbito es el total y `(1+f)` es la elasticidad
+> correcta: el cuadro no tiene el error de base que sí tenía el §5 del informe general.
+> Cambian dos cosas menores igual. El valor exportado ahora se calcula del registro
+> oficial en lugar de estar escrito a mano, y la fila prestada del sistema IAIDS pasa a
+> **−0,241** —la propia argentina corregida— y se evalúa con ámbito europeo, donde el
+> umbral de facturación no es −1 sino cerca de −2. Ver `recorte_conxemar.simular()`.
+
 Y el test que decide sigue siendo el del margen, no el de la facturación: con `f = −0,184`,
 recortar conviene sólo si el costo que se ahorra por no pescar supera el **81,6% del FOB**
 —unos **US$5,34 por kilo**—. Ese umbral es ahora **más alto** que con la estimación anterior

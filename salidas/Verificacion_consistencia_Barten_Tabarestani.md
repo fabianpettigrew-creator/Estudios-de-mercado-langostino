@@ -215,6 +215,23 @@ reporta para 2025.
 La dirección del resultado no cambia. La cifra de **US$ 47 millones** no es defendible tal
 como está construida.
 
+**Corregido el 22-09-2026, y al corregirlo apareció algo que esta nota no había visto.**
+Separando ámbitos, `Δingreso% = Δq·(1 + f·s)` con `s` la fracción del valor exportado
+sobre la que rige esa `f`. La fórmula vieja es el caso particular `s = 1`. De ahí sale que
+el punto de equilibrio no es −1 sino
+
+    f* = −1 / (s·ρ)        ρ = Δq del ámbito / Δq total
+
+**El umbral de −1 sobre el que se apoya todo el encargo sólo vale si la flexibilidad
+cubre el total exportado.** Para la del sistema por origen, que gobierna el precio en la
+UE y nada más, con `s` en torno a la mitad el umbral se va cerca de **−2**: el embarque a
+Estados Unidos y a Asia pierde volumen sin ninguna compensación de precio. Para las `f` de
+la ecuación única y de la tangonera, que salen del FOB argentino a todos los destinos, el
+ámbito es el total y −1 sigue siendo el umbral correcto.
+
+Las dos correcciones empujan para el mismo lado: el escenario central pierde más plata y
+la vara que habría que superar es más alta. La conclusión del estudio sale reforzada.
+
 ---
 
 ## 8. Dos citas de Barten para corregir, y una que conviene usar mejor
@@ -311,7 +328,7 @@ Para que quede claro qué no hay que rehacer:
 | 2 | Índice de Stone con participaciones medias en el sistema de origen | **hecho** | mueve la escala (−0,82) |
 | 3 | Traer `iaids_simetria.py` al §2 y actualizar el §7 | §7 actualizado; falta correr | probablemente poco |
 | 4 | Testear negatividad y reportarla (Barten ec. 17) | **hecho**, lo imprime el modelo | no, pero la diagonal de Vietnam necesita explicación |
-| 5 | Reexpresar el §5 sobre una base coherente (embarque a la UE, FOB del entero) | pendiente | baja la cifra de US$ 47 M |
+| 5 | Reexpresar el §5 sobre una base coherente (embarque a la UE, FOB del entero) | **hecho** | la EMPEORA, y mueve el umbral de −1 a ≈−2 |
 | 6 | Cruzadas: intensidades de Allais en lugar de `f_ij` crudas, o bajar la afirmación del §6.3 | pendiente | cambia una conclusión cualitativa |
 | 7 | Test de exogeneidad tipo Hausman antes de fijar la forma del sistema | pendiente | podría cambiar el modelo |
 | 8 | Correcciones de cita (raya, «todos los precios», 168 obs.) | **hecho** | no |

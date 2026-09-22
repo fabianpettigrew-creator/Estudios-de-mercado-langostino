@@ -294,22 +294,35 @@ def main() -> None:
     print("5. SIMULACIÓN: las medidas propuestas en Conxemar 2025")
     print("=" * 92)
     rec = recorte_conxemar.recorte()
+    base = recorte_conxemar.base_exportadora()
     print(recorte_conxemar.describir(rec))
     print()
-    dq = rec["dq"]
-    fila = []
-    for f, nom in [(R.loc["A2 anual, demanda residual", "f"], "ecuación única, anual (A2)"),
-                   (f_sis, "sistema de demanda inversa (central)"),
-                   (f_sis - 1.96 * se_ar, "sistema, cota más favorable del IC 95%"),
-                   (esc["AR"], "si TODOS los orígenes recortaran a la vez (escala)"),
-                   (-1.0, "el f que haría falta para no perder plata")]:
-        fila.append({"supuesto": nom, "f": f, "Δ oferta %": dq * 100,
-                     "Δ precio %": f * dq * 100, "Δ ingreso %": (1 + f) * dq * 100})
-    sim = pd.DataFrame(fila).set_index("supuesto")
+    print(recorte_conxemar.describir_base(base))
+    print()
+    # El ÁMBITO de cada f no es decorativo: dice sobre qué parte del valor exportado
+    # rige. Las de la ecuación única salen del FOB argentino a todos los destinos; las
+    # del sistema por origen, del precio de importación europeo, que no gobierna lo que
+    # Argentina le vende a Estados Unidos ni a Asia.
+    u_tot = recorte_conxemar.umbral(rec, base, "total")
+    u_ue = recorte_conxemar.umbral(rec, base, "ue")
+    sim = recorte_conxemar.tabla([
+        ("ecuación única, anual (A2)", R.loc["A2 anual, demanda residual", "f"], "total"),
+        ("sistema de demanda inversa (central)", f_sis, "ue"),
+        ("sistema, cota más favorable del IC 95%", f_sis - 1.96 * se_ar, "ue"),
+        ("si TODOS los orígenes recortaran a la vez (escala)", esc["AR"], "ue"),
+        ("el f que haría falta para no perder plata — ámbito total", u_tot, "total"),
+        ("el f que haría falta para no perder plata — ámbito UE", u_ue, "ue"),
+    ], rec, base)
     print(sim.round(2).to_string())
-    expo = recorte_conxemar.EXPO_2025
-    print(f"\nSobre US$ {expo:,.0f} M de exportación de langostino (2025), el escenario "
-          f"del sistema implica {expo * (1 + f_sis) * dq:,.0f} millones de dólares de facturación.")
+    print(f"\nSobre US$ {base['v_total']:,.0f} M de exportación de langostino "
+          f"({base['anio']}), el escenario del sistema implica "
+          f"{sim.loc['sistema de demanda inversa (central)', 'Δ ingreso US$ M']:,.0f} "
+          "millones de dólares de facturación.")
+    print(f"El umbral de facturación es {u_tot:+.2f} para una f de alcance argentino, pero "
+          f"{u_ue:+.2f} para una f europea:")
+    print("el precio sube sólo donde rige la f y el resto del embarque pierde volumen sin")
+    print("compensación, así que «alcanza con |f| > 1» es una vara demasiado baja para el")
+    print("sistema por origen, no demasiado alta.")
 
     # ------------------------------------------------------ salidas
     try:
