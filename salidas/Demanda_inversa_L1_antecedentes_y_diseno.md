@@ -14,7 +14,7 @@ La forma inversa no es una preferencia de estilo: en pesca la cantidad llega al 
 predeterminada por la biología, la flota y el calendario regulatorio, y el precio es el que
 ajusta. Es el argumento fundacional de **Barten y Bettendorf (1989)**, que estimaron un
 sistema Rotterdam inverso sobre ocho especies de pescado blanco en puertos belgas (169
-observaciones mensuales, 1973-1987): *«los operadores fijan los precios en función de las
+meses de serie, dic-1973 a dic-1987; 168 observaciones en diferencias): *«los operadores fijan los precios en función de las
 cantidades; la causalidad va de la cantidad al precio»*.
 
 El parámetro de interés es la **flexibilidad-precio propia**
@@ -33,8 +33,12 @@ intervalo de confianza y ver de qué lado del −1 cae. **No alcanza con que `f`
 y significativo.**
 
 El antecedente no es alentador: Barten y Bettendorf reportan flexibilidades propias
-compensadas de **−0,09 a −0,37** (lenguado el mayor, gallineta el menor) y una flexibilidad
-de escala cercana a **−1,0**. Con esos órdenes de magnitud, restringir la oferta de una
+compensadas de **−0,09 a −0,37** (la raya el mayor, gallineta el menor) y una flexibilidad
+de escala cercana a **−1,0**. Cuidado con comparar ese rango contra el umbral: son
+elasticidades de sustitución propia *compensadas*, y lo que se contrasta acá es una
+flexibilidad *no compensada*. El objeto comparable es `h_i + h_ii/w_i`, que en su cuadro 2
+va de **−0,11** (gallineta) a **−0,57** (lenguado, el 47% del valor y el análogo más cercano
+a la posición del L1 en su nicho). Sigue muy por encima de −1, que es lo que importa. Con esos órdenes de magnitud, restringir la oferta de una
 especie destruye ingreso. La pregunta abierta es si el L1 argentino, que es un nicho
 diferenciado y no un pescado blanco genérico, se comporta distinto.
 
@@ -70,8 +74,12 @@ diferenciado y no un pescado blanco genérico, se comporta distinto.
   A Mixed Demand Approach», *MRE* 32(4). El más pertinente al caso argentino: tratan los
   **desembarques salvajes del Golfo como cantidad predeterminada** (forma inversa) y los
   **precios de las importaciones de cultivo como predeterminados** (forma directa), en un
-  sistema de **demanda mixta**. Resultado: un cambio de 1% en el precio de importación mueve
-  0,98% el precio doméstico. Es decir, el salvaje casi no tiene autonomía de precio frente al
+  sistema de **demanda mixta**. Resultado: un cambio simultáneo de 1% en **todos** los
+  precios de importación mueve 0,98% el precio doméstico. La palabra «todos» es la que hace
+  útil a la cita: para un origen solo los números son otros y apuntan al mismo lado —
+  Tailandia, con más del 35% del volumen importado, tiene una flexibilidad precio-precio de
+  apenas **0,02**, porque cuando sube su precio los otros siete orígenes amortiguan casi
+  todo el ajuste. Es decir, el salvaje casi no tiene autonomía de precio frente al
   cultivo. Si eso vale para el L1 frente al vannamei, la palanca de la oferta argentina es
   débil por construcción.
 - **Price flexibility and international shrimp supply** — flexibilidades de precio del

@@ -35,6 +35,7 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 
+import flexibilidades_iaids as fx
 import recorte_conxemar
 from statsmodels.tsa.stattools import adfuller, kpss
 
@@ -336,7 +337,7 @@ def sistema():
     """Sistema de demanda inversa (LA/IAIDS) sobre la importación extra-UE de camarón
     tropical congelado, por origen, mensual.
 
-        w_i = a_i + Σ_j g_ij·log q_j + b_i·log Q,   log Q = Σ_k w_k·log q_k (Stone)
+        w_i = a_i + Σ_j g_ij·log q_j + b_i·log Q,   log Q = Σ_k w̄_k·log q_k (Stone)
 
     Homogeneidad impuesta por normalización (se usa log q_j − log q_RE) y adición por
     construcción (la ecuación de «resto» sale por diferencia). La simetría NO se impone:
@@ -344,8 +345,12 @@ def sistema():
     ni el orden de magnitud de la flexibilidad propia argentina. Se informa el sistema
     sin restringir y se deja constancia.
 
-    Flexibilidades no compensadas:  f_ij = g_ij/w_i − δ_ij
-    Flexibilidad de escala:         f_i  = b_i/w_i − 1
+    El índice de Stone va con participaciones MEDIAS, no corrientes: con las corrientes
+    el regresor lleva adentro la variable dependiente (la regla del anexo A.11, que el
+    sistema de flotas ya respetaba y éste no).
+
+    Las flexibilidades salen de `flexibilidades_iaids`, que es la única definición del
+    proyecto:  f_ij = g_ij/w_i + b_i·w_j/w_i − δ_ij  y  f_i^escala = b_i/w_i − 1.
     """
     print("\n" + "=" * 92)
     print("4. SISTEMA DE DEMANDA INVERSA (LA/IAIDS) — importación extra-UE por origen")
@@ -355,7 +360,7 @@ def sistema():
     Q = (O.kg.unstack().fillna(0) / 1e6)[ORIGENES]          # miles de toneladas
     W = V.div(V.sum(axis=1), axis=0)
     X = np.log(Q.clip(lower=1e-3))
-    lnQ = (W * X).sum(axis=1)
+    lnQ = X @ W.mean()                                      # Stone con w MEDIAS (A.11)
 
     print("participación media en el valor importado (%):")
     print((W.mean() * 100).round(1).to_string())
@@ -384,16 +389,17 @@ def sistema():
         for j in ORIGENES[:-1]:
             G.loc[i, j] = par.loc[f"x_{j}", i]
         G.loc[i, "RE"] = -G.loc[i, ORIGENES[:-1]].sum()     # homogeneidad
-    F = pd.DataFrame(index=ORIGENES, columns=ORIGENES, dtype=float)
-    for i in ORIGENES:
-        for j in ORIGENES:
-            F.loc[i, j] = G.loc[i, j] / w[i] - (1.0 if i == j else 0.0)
-    esc = pd.Series({i: par.loc["lnQ", i] / w[i] - 1 for i in ORIGENES}, name="escala")
+    b = par.loc["lnQ", ORIGENES]
+    F, esc = fx.matriz(G, b, w)
+    fx.verificar(F, esc, w)
 
     print("\nFlexibilidades de cantidad, no compensadas (fila = precio de i, col = cantidad de j):")
     print(F.round(3).to_string())
     print("\nFlexibilidad de escala (todas las cantidades suben 1% a la vez):")
     print(esc.round(3).to_string())
+    print("  (cada fila de la matriz suma su flexibilidad de escala; es la identidad"
+          " que verifica flexibilidades_iaids.verificar)")
+    fx.informar_negatividad(G, w)
     se_ar = se.loc["x_AR", "AR"] / w["AR"]
     f = F.loc["AR", "AR"]
     print(f"\nArgentina — flexibilidad propia f = {f:+.3f}  (SE {se_ar:.3f})  "

@@ -305,20 +305,38 @@ Para que quede claro qué no hay que rehacer:
 
 ## Orden sugerido de corrección
 
-| # | Qué | Costo | Mueve el resultado |
+| # | Qué | Estado | Mueve el resultado |
 |---|---|---|---|
-| 1 | Arreglar A.12 y las dos líneas de código (`+ β_i·w_j/w_i`) | una línea × 2 | −0,267 → −0,241 |
-| 2 | Índice de Stone con participaciones medias en el sistema de origen | una línea × 2 | mueve la escala (−0,82) |
-| 3 | Traer `iaids_simetria.py` al §2 y actualizar el §7 | redacción | probablemente poco |
-| 4 | Testear negatividad y reportarla (Barten ec. 17) | ya está en `verificar_sistema_inverso.py` | no, pero la diagonal de Vietnam necesita explicación |
-| 5 | Reexpresar el §5 sobre una base coherente (embarque a la UE, FOB del entero) | media | baja la cifra de US$ 47 M |
-| 6 | Cruzadas: intensidades de Allais en lugar de `f_ij` crudas, o bajar la afirmación del §6.3 | media | cambia una conclusión cualitativa |
-| 7 | Test de exogeneidad tipo Hausman antes de fijar la forma del sistema | alta | podría cambiar el modelo |
-| 8 | Correcciones de cita (raya, «todos los precios», 168 obs.) | redacción | no |
+| 1 | Arreglar A.12 y la fórmula en los tres scripts (`+ β_i·w_j/w_i`) | **hecho** | −0,267 → −0,241 |
+| 2 | Índice de Stone con participaciones medias en el sistema de origen | **hecho** | mueve la escala (−0,82) |
+| 3 | Traer `iaids_simetria.py` al §2 y actualizar el §7 | §7 actualizado; falta correr | probablemente poco |
+| 4 | Testear negatividad y reportarla (Barten ec. 17) | **hecho**, lo imprime el modelo | no, pero la diagonal de Vietnam necesita explicación |
+| 5 | Reexpresar el §5 sobre una base coherente (embarque a la UE, FOB del entero) | pendiente | baja la cifra de US$ 47 M |
+| 6 | Cruzadas: intensidades de Allais en lugar de `f_ij` crudas, o bajar la afirmación del §6.3 | pendiente | cambia una conclusión cualitativa |
+| 7 | Test de exogeneidad tipo Hausman antes de fijar la forma del sistema | pendiente | podría cambiar el modelo |
+| 8 | Correcciones de cita (raya, «todos los precios», 168 obs.) | **hecho** | no |
 
 Los puntos 1 a 4 son de higiene y no tocan el mensaje. El 7 es el que decide si el sistema
 por origen es un Rotterdam inverso o el **mixto** que el antecedente prescribe, y es el
 único que puede cambiar el número.
+
+### Qué quedó aplicado (22-09-2026)
+
+La fórmula vivía en **tres** copias, no dos: se sumó
+`demanda_inversa_sistema_flotas.py`, donde alimenta la recomposición A.13 y por lo tanto
+sí mueve el −0,212 de la cadena de dos flotas. Las tres pasaron a
+`flexibilidades_iaids.py`, módulo nuevo con una sola definición —el mismo criterio con que
+`recorte_conxemar.py` unificó el recorte— más `verificar()`, que corta la corrida si
+`Σ_j f_ij ≠ f_i^escala`, y `negatividad()`, que informa la condición (17) de Barten.
+
+El guardarraíl está probado en las dos direcciones: acepta la fórmula corregida y corta
+con la vieja, con el mensaje `fila AR: Σ_j f_ij = −1,000000 contra escala −0,820000`. El
+circuito completo se corrió sobre un panel sintético de 163 meses, porque las bases no
+están en el repositorio: la identidad cierra a seis decimales sobre un ajuste real de MCO.
+
+**Lo que falta es correrlo con el dato real.** Las cifras publicadas del §2, de A.6 y de
+A.14 son todas de la corrida anterior y quedaron marcadas como tales en los tres
+documentos. Se reconocen a simple vista: suman exactamente −1.
 
 ---
 

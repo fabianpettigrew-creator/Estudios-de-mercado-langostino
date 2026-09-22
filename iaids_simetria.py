@@ -9,7 +9,7 @@ impone y se mide qué cambia.
 
 El modelo (LA/IAIDS, Eales-Unnevehr; Barten-Bettendorf para el caso pesquero):
 
-    w_i = a_i + Σ_j γ_ij·log q_j + b_i·log Q ,   log Q = Σ_k w_k·log q_k   (índice de Stone)
+    w_i = a_i + Σ_j γ_ij·log q_j + b_i·log Q ,   log Q = Σ_k w̄_k·log q_k   (índice de Stone)
 
 con w_i la participación del origen i en el valor importado extra-UE de camarón congelado
 y q_i su volumen. Restricciones teóricas:
@@ -49,6 +49,8 @@ import warnings
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+
+import flexibilidades_iaids as fx
 from linearmodels.system import SUR
 from scipy import stats
 from statsmodels.tsa.stattools import adfuller, kpss
@@ -79,7 +81,7 @@ def panel():
     Q = (O.kg.unstack().fillna(0) / 1e6)[ORIGENES]          # miles de toneladas
     W = V.div(V.sum(axis=1), axis=0)
     X = np.log(Q.clip(lower=1e-3))
-    lnQ = (W * X).sum(axis=1)
+    lnQ = X @ W.mean()                                      # Stone con w MEDIAS (A.11)
 
     Z = pd.DataFrame({f"x_{c}": X[c] - X["RE"] for c in ORIGENES[:-1]})
     Z["lnQ"] = lnQ
@@ -187,15 +189,14 @@ def matriz_gamma(res, dentro: list[str], fuera: str) -> pd.DataFrame:
 
 
 def flexibilidades(G: pd.DataFrame, res, dentro, fuera, w: pd.Series):
-    F = pd.DataFrame(index=ORIGENES, columns=ORIGENES, dtype=float)
-    for i in ORIGENES:
-        for j in ORIGENES:
-            F.loc[i, j] = G.loc[i, j] / w[i] - (1.0 if i == j else 0.0)
-    b = {}
-    for i in dentro:
-        b[i] = res.params[f"{i}_lnQ"]
+    """Delega en `flexibilidades_iaids`, que es la única definición del proyecto:
+    f_ij = γ_ij/w_i + β_i·w_j/w_i − δ_ij. La ecuación que queda fuera del sistema
+    recupera su β por adición (Σ_i β_i = 0)."""
+    b = {i: res.params[f"{i}_lnQ"] for i in dentro}
     b[fuera] = -sum(b.values())
-    esc = pd.Series({i: b[i] / w[i] - 1 for i in ORIGENES}, name="escala")
+    b = pd.Series(b).reindex(ORIGENES)
+    F, esc = fx.matriz(G, b, w)
+    fx.verificar(F, esc, w)
     return F, esc
 
 

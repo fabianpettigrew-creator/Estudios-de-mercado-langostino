@@ -40,6 +40,16 @@ sustitución.
 
 ## 2. El sistema de demanda inversa
 
+> **Pendiente de regenerar (22-09-2026).** Las cifras de esta sección salen de la corrida
+> anterior al arreglo de la fórmula de flexibilidad (`flexibilidades_iaids.matriz`) y del
+> índice de Stone. Se reconocen porque **todas las filas de la matriz suman exactamente
+> −1**, que es imposible junto con la fila de escala de abajo. Hay que rehacerlas con
+> `python demanda_inversa_modelo.py`. La reconstrucción a partir de estos mismos números
+> da una propia argentina de **−0,241** en lugar de −0,267 —más lejos del umbral, no más
+> cerca—, así que la conclusión no se mueve, pero el número que va a la presentación sí.
+> Detalle en `salidas/Verificacion_consistencia_Barten_Tabarestani.md`.
+
+
 Participación media en el valor importado extra-UE: **Argentina 14,6%** · Ecuador 26,1% ·
 India 16,4% · Vietnam 9,1% · resto 33,7%. Precio medio de importación: Argentina
 6,27 EUR/kg, Ecuador 5,73, India 6,74, Vietnam 8,53.
@@ -206,8 +216,16 @@ son compatibles con el dato propio del proyecto:
 - **Lo que se descarta y lo que no.** No se descarta que `f` sea algo negativo: el sistema
   lo estima en −0,27 y es significativo. Lo que se descarta, con mucho margen, es que sea
   del orden de −1, que es lo que haría falta.
-- **La simetría del sistema no está impuesta.** Refinamiento pendiente si el trabajo va a
-  arbitraje.
+- **La simetría del sistema no está impuesta** en la corrida de esta sección, pero
+  `iaids_simetria.py` ya la impone por SUR iterado, con test de Wald y de razón de
+  verosimilitud. Corresponde traer ese resultado al §2. Importa más de lo que parecía: la
+  lectura de que «Argentina recibe el shock de los demás y los demás casi no reciben el
+  suyo» descansa entera en una asimetría (h_AR,EC = +0,019 contra h_EC,AR = −0,002) que la
+  simetría de Antonelli dice que no puede existir.
+- **La negatividad no se cumple.** La matriz de Antonelli implícita tiene la diagonal de
+  Vietnam positiva y un autovalor de +0,011: falla la condición (17) de Barten y
+  Bettendorf, que es la que hace interpretables a las flexibilidades propias. El
+  diagnóstico ahora lo imprime el propio modelo (`flexibilidades_iaids.negatividad`).
 - **Los instrumentos de oferta que se listaron en la nota de diseño no se usaron.** El
   desembarque es plausiblemente predeterminado por biología y calendario, y la dirección del
   sesgo por endogeneidad —más precio induce más esfuerzo— empujaría `f` hacia arriba, o sea

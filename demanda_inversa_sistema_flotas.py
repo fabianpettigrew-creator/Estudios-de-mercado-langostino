@@ -31,6 +31,8 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 
+import flexibilidades_iaids as fx
+
 warnings.filterwarnings("ignore")
 sys.stdout.reconfigure(encoding="utf-8")
 pd.set_option("display.width", 210)
@@ -170,19 +172,22 @@ def sistema_interno(A, wt, wf):
     print(f"\n   participación media: tangonera {wt:.3f} · fresquera {wf:.3f}")
 
     # γ_11 = γ = −γ_12 = −γ_21 = γ_22 ;  β_tan = β = −β_fre
-    F = pd.DataFrame(
-        [[g / wt - 1, -g / wt], [-g / wf, g / wf - 1]],
-        index=["precio tangonero", "precio fresquero"],
-        columns=["cantidad tangonera", "cantidad fresquera"])
+    tf = ["tangonera", "fresquera"]
+    G = pd.DataFrame([[g, -g], [-g, g]], index=tf, columns=tf)
+    F, esc = fx.matriz(G, pd.Series({"tangonera": b, "fresquera": -b}),
+                       pd.Series({"tangonera": wt, "fresquera": wf}))
+    fx.verificar(F, esc, pd.Series({"tangonera": wt, "fresquera": wf}))
+    F.index = ["precio tangonero", "precio fresquero"]
+    F.columns = ["cantidad tangonera", "cantidad fresquera"]
     print("\n   Flexibilidades de cantidad CONDICIONALES (dentro del grupo argentino):")
     print(F.round(3).to_string())
-    esc = pd.Series({"tangonera": b / wt - 1, "fresquera": -b / wf - 1})
-    print("\n   Flexibilidades de escala:")
+    print("\n   Flexibilidades de escala (cada fila de arriba suma la suya):")
     print(esc.round(3).to_string())
     # error estándar de la flexibilidad propia por el método delta (w fijo)
     se_f = m.bse["ratio"] / wt
-    print(f"\n   f_tan,tan condicional = {g / wt - 1:+.3f}  se {se_f:.3f}  "
-          f"IC95% [{g / wt - 1 - 1.96 * se_f:+.3f}, {g / wt - 1 + 1.96 * se_f:+.3f}]")
+    f11 = F.iloc[0, 0]
+    print(f"\n   f_tan,tan condicional = {f11:+.3f}  se {se_f:.3f}  "
+          f"IC95% [{f11 - 1.96 * se_f:+.3f}, {f11 + 1.96 * se_f:+.3f}]")
     return m, F, esc, se_f
 
 

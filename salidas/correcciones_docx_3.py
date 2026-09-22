@@ -310,13 +310,22 @@ P("Estimación: γ = 0,1081 con t = 12,5, sobre N = 138 meses, R² = 0,932, con 
 
 H2("A.5.3 De coeficientes a flexibilidades")
 P("Las flexibilidades de cantidad no compensadas y la de escala se recuperan como:")
-EQ("f_ij  =  γ_ij / w_i − δ_ij           ·           f_i^escala  =  β_i / w_i − 1", "A.12")
-P("con δ_ij la delta de Kronecker. La matriz condicional resultante —fila: precio de i; "
-  "columna: cantidad de j— es:")
+EQ("f_ij  =  γ_ij / w_i  +  β_i · w_j / w_i  −  δ_ij        ·        "
+   "f_i^escala  =  β_i / w_i − 1", "A.12")
+P("con δ_ij la delta de Kronecker. El término β_i·w_j/w_i es el pedazo del efecto escala que "
+  "le toca a cada casilla, y omitirlo no es inocuo: como la homogeneidad da Σ_j γ_ij = 0, sin "
+  "ese término ", ("toda fila suma exactamente −1", "b"), " y la matriz contradice a la columna "
+  "de escala del mismo cuadro. La identidad que hay que poder verificar siempre es "
+  "Σ_j f_ij = f_i^escala. La matriz condicional resultante —fila: precio de i; columna: "
+  "cantidad de j— es:")
 TABLA(["", "Cantidad tangonera", "Cantidad fresquera"], [
     ("Precio tangonero", "−0,872", "−0,128"),
     ("Precio fresquero", "−0,685", "−0,315"),
 ], [3100, 3000, 3000], negrita_col0=True)
+P(("PENDIENTE DE REGENERAR: ", "b"), "estas dos filas y las cifras de A.14 y A.6 salen de la "
+  "corrida anterior al arreglo de A.12 —se reconocen porque suman exactamente −1— y hay que "
+  "rehacerlas con demanda_inversa_sistema_flotas.py y demanda_inversa_modelo.py. La fórmula de "
+  "arriba ya es la correcta.")
 P()
 
 H2("A.5.4 Recomposición: el paso donde es fácil equivocarse")
